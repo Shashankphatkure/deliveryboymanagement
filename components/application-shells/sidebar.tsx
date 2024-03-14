@@ -12,12 +12,21 @@ import {
   DocumentDuplicateIcon,
   FolderIcon,
   HomeIcon,
+  MapIcon,
   TruckIcon,
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import TableCustomer from "../lists/tables";
+import TableCustomer from "../lists/tabledrivers";
 import NewDriverForm from "../forms/form-layout";
+import TableDrivers from "../lists/tabledrivers";
+import TableOrders from "../lists/tableorders";
+import TableOrdersrunning from "../lists/tableordersrunning";
+import TableOrdersunassigned from "../lists/tableordersunasigned";
+import NewCustomerForm from "../forms/form-layoutnewcustomer";
+import NewOrderForm from "../forms/form-layoutneworder";
+import Ordersummary from "../ordersummaries/ordersummaries";
+import DriverReview from "../driver/driverreview";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: ChartBarIcon, current: true },
@@ -26,6 +35,7 @@ const navigation = [
   { name: "Customers", href: "#", icon: UsersIcon, current: false },
   { name: "Actions", href: "#", icon: CursorArrowRaysIcon, current: false },
   { name: "Reports", href: "#", icon: ChartPieIcon, current: false },
+  { name: "Locations", href: "#", icon: MapIcon, current: false },
 ];
 const teams = [
   { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
@@ -182,7 +192,6 @@ export default function DashboardSidebar() {
             </div>
           </Dialog>
         </Transition.Root>
-
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -274,7 +283,6 @@ export default function DashboardSidebar() {
             </nav>
           </div>
         </div>
-
         <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
           <button
             type="button"
@@ -297,9 +305,25 @@ export default function DashboardSidebar() {
           </a>
         </div>
 
+        {/* 
+
+        Orders page code
+
         <main className="py-10 lg:pl-72">
           <div className="px-4 sm:px-6 lg:px-8">
-            <NewDriverForm />
+            <TableOrdersunassigned />
+          </div>
+          <div className="px-4 sm:px-6 lg:px-8 mt-6">
+            <TableOrdersrunning />
+          </div>
+          <div className="px-4 sm:px-6 lg:px-8 mt-6">
+            <TableOrders />
+          </div>
+        </main> */}
+
+        <main className="py-10 lg:pl-72">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <DriverReview />
           </div>
         </main>
       </div>
