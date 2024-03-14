@@ -27,6 +27,7 @@ import NewCustomerForm from "../forms/form-layoutnewcustomer";
 import NewOrderForm from "../forms/form-layoutneworder";
 import Ordersummary from "../ordersummaries/ordersummaries";
 import DriverReview from "../driver/driverreview";
+import DriverOverview from "../productoverview/productoverview";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: ChartBarIcon, current: true },
@@ -323,6 +324,8 @@ export default function DashboardSidebar() {
 
         <main className="py-10 lg:pl-72">
           <div className="px-4 sm:px-6 lg:px-8">
+            <DriverOverview />
+            <TableOrders />
             <DriverReview />
           </div>
         </main>
