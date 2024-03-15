@@ -16,7 +16,10 @@
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "@trigger.dev/sdk": "^2.3.18",
+    "@trigger.dev/nextjs": "^2.3.18",
+    "@trigger.dev/react": "^2.3.18"
   },
   "devDependencies": {
     "@types/node": "20.11.5",
@@ -26,5 +29,8 @@
     "encoding": "^0.1.13",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1"
+  },
+  "trigger.dev": {
+    "endpointId": "skillconnect-TfAh"
   }
 }

@@ -133,21 +133,20 @@ export default function DriverOverview() {
                 className="h-5 w-5 flex-shrink-0 text-green-500"
                 aria-hidden="true"
               />
-              <p className="ml-2 text-sm text-gray-500">
-                In stock and ready to ship
-              </p>
+              <p className="ml-2 text-sm text-gray-500">Status : Active</p>
             </div>
           </section>
         </div>
 
         {/* Product image */}
         <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg">
-            <img
-              src={product.imageSrc}
-              alt={product.imageAlt}
-              className="h-full w-full object-cover object-center"
-            />
+          <div className="mt-8 border-b border-t border-gray-200 shadow-sm sm:rounded-lg sm:border">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.825875255995!2d73.05263317524917!3d19.027392982167235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c243f4be5555%3A0x643bf6aac93ffc16!2sCollege%20of%20Nursing%2C%20Navi%20Mumbai!5e0!3m2!1sen!2sin!4v1710425186292!5m2!1sen!2sin"
+              width="100%"
+              height="500"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
 
@@ -226,7 +225,7 @@ export default function DriverOverview() {
                   type="submit"
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
-                  Add to bag
+                  Deactivate Account
                 </button>
               </div>
               <div className="mt-6 text-center">
@@ -236,7 +235,7 @@ export default function DriverOverview() {
                     aria-hidden="true"
                   />
                   <span className="text-gray-500 hover:text-gray-700">
-                    Lifetime Guarantee
+                    Account activated on Date
                   </span>
                 </a>
               </div>
