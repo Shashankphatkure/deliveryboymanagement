@@ -48,7 +48,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DriverOverview() {
+export default function DriverOverview({ driver }) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
 
   return (
@@ -85,7 +85,7 @@ export default function DriverOverview() {
 
           <div className="mt-4">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              {product.name}
+              {driver.name}
             </h1>
           </div>
 
@@ -135,7 +135,9 @@ export default function DriverOverview() {
                 className="h-5 w-5 flex-shrink-0 text-green-500"
                 aria-hidden="true"
               />
-              <p className="ml-2 text-sm text-gray-500">Status : Active</p>
+              <p className="ml-2 text-sm text-gray-500">
+                Status : {driver.status.toUpperCase()}
+              </p>
             </div>
           </section>
         </div>

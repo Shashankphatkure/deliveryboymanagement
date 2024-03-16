@@ -1,4 +1,4 @@
-export default function DriverPhoto() {
+export default function DriverPhoto({ driver }) {
   return (
     <div className="md:flex md:items-center md:justify-between md:space-x-5">
       <div className="flex items-start space-x-5">
@@ -21,14 +21,14 @@ export default function DriverPhoto() {
           */}
         <div className="pt-1.5">
           <h1 className="text-2xl font-bold text-gray-900">
-            Vehicle Number : XX XX XX XX : Vehicle Colour
+            Vehicle Number : {driver.vehiclenumber} : {driver.vehiclecolor}
           </h1>
           <p className="text-sm font-medium text-gray-500">
-            Joined on{" "}
+            Joined in{" "}
             <a href="#" className="text-gray-900">
               Locations address 1
             </a>{" "}
-            on <time dateTime="2020-08-25">August 25, 2020</time>
+            on <time dateTime="2020-08-25">{driver.created_at}</time>
           </p>
         </div>
       </div>
