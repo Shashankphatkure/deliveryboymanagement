@@ -16,7 +16,7 @@ export default function TableCustomers() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">
-            Delivery Driver
+            All customers
           </h1>
           <p className="mt-2 text-sm text-gray-700">
             A list of all the users in your account including their name, title,

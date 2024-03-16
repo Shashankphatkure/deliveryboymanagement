@@ -1,8 +1,7 @@
-import DashboardSidebar from "@/components/application-shells/sidebar";
 import React from "react";
 
 const page = () => {
-  return <DashboardSidebar />;
+  return <div>page</div>;
 };
 
 export default page;

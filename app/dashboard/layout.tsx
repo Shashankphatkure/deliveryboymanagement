@@ -24,18 +24,43 @@ import DriverReview from "@/components/driver/driverreview";
 import EmbeddedContent from "@/components/googlemaps/locations";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: ChartBarIcon, current: true },
-  { name: "Orders", href: "#", icon: CurrencyDollarIcon, current: false },
-  { name: "Drivers", href: "#", icon: TruckIcon, current: false },
-  { name: "Customers", href: "#", icon: UsersIcon, current: false },
-  { name: "Actions", href: "#", icon: CursorArrowRaysIcon, current: false },
-  { name: "Reports", href: "#", icon: ChartPieIcon, current: false },
-  { name: "Locations", href: "#", icon: MapIcon, current: false },
-];
-const teams = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
+  { name: "Dashboard", href: "/dashboard", icon: ChartBarIcon, current: true },
+  {
+    name: "Orders",
+    href: "/dashboard/orders",
+    icon: CurrencyDollarIcon,
+    current: false,
+  },
+  {
+    name: "Drivers",
+    href: "/dashboard/drivers",
+    icon: TruckIcon,
+    current: false,
+  },
+  {
+    name: "Customers",
+    href: "/dashboard/customers",
+    icon: UsersIcon,
+    current: false,
+  },
+  {
+    name: "Actions",
+    href: "/dashboard/actions",
+    icon: CursorArrowRaysIcon,
+    current: false,
+  },
+  {
+    name: "Reports",
+    href: "/dashboard/reports",
+    icon: ChartPieIcon,
+    current: false,
+  },
+  {
+    name: "Locations",
+    href: "/dashboard/locations",
+    icon: MapIcon,
+    current: false,
+  },
 ];
 
 function classNames(...classes: any) {
@@ -150,38 +175,7 @@ export default function DashboardLayout({
                             ))}
                           </ul>
                         </li>
-                        <li>
-                          <div className="text-xs font-semibold leading-6 text-gray-400">
-                            Your teams
-                          </div>
-                          <ul role="list" className="-mx-2 mt-2 space-y-1">
-                            {teams.map((team) => (
-                              <li key={team.name}>
-                                <a
-                                  href={team.href}
-                                  className={classNames(
-                                    team.current
-                                      ? "bg-gray-50 text-indigo-600"
-                                      : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                                  )}
-                                >
-                                  <span
-                                    className={classNames(
-                                      team.current
-                                        ? "text-indigo-600 border-indigo-600"
-                                        : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
-                                      "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white"
-                                    )}
-                                  >
-                                    {team.initial}
-                                  </span>
-                                  <span className="truncate">{team.name}</span>
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
+                        <li></li>
                       </ul>
                     </nav>
                   </div>
@@ -231,38 +225,7 @@ export default function DashboardLayout({
                     ))}
                   </ul>
                 </li>
-                <li>
-                  <div className="text-xs font-semibold leading-6 text-gray-400">
-                    Your teams
-                  </div>
-                  <ul role="list" className="-mx-2 mt-2 space-y-1">
-                    {teams.map((team) => (
-                      <li key={team.name}>
-                        <a
-                          href={team.href}
-                          className={classNames(
-                            team.current
-                              ? "bg-gray-50 text-indigo-600"
-                              : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                          )}
-                        >
-                          <span
-                            className={classNames(
-                              team.current
-                                ? "text-indigo-600 border-indigo-600"
-                                : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
-                              "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white"
-                            )}
-                          >
-                            {team.initial}
-                          </span>
-                          <span className="truncate">{team.name}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
+                <li></li>
                 <li className="-mx-6 mt-auto">
                   <a
                     href="#"
