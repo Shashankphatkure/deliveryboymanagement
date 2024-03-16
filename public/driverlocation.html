@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI"></script>
+  </head>
+  <body>
+    <!-- The div element for the map -->
+    <div id="map"></div>
+
+    <script>
+      function initMap() {
+        // The location of the driver
+        const driverLocation = { lat: 19.046707, lng: 73.08078 };
+
+        // The map, centered at the driver's location
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+          center: driverLocation,
+        });
+
+        // The marker, positioned at the driver's location
+        const marker = new google.maps.Marker({
+          position: driverLocation,
+          map: map,
+          title: "Driver Location",
+        });
+      }
+
+      // Call the initMap function when the page loads
+      google.maps.event.addDomListener(window, "load", initMap);
+    </script>
+  </body>
+</html>

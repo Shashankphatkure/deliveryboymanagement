@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps Markers</title>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI&callback=initMap"
+      async
+      defer
+    ></script>
+    <script>
+      function initMap() {
+        // Map options
+        var mapOptions = {
+          zoom: 12,
+          center: new google.maps.LatLng(19.046707, 73.08078), // Center of the map
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+        };
+
+        // Create a new map
+        var map = new google.maps.Map(
+          document.getElementById("map"),
+          mapOptions
+        );
+
+        // Define the locations and labels
+        var locations = [
+          ["Driver 1", 19.046707, 73.08078],
+          ["Driver 2", 19.00285, 73.014572], // Replace with actual coordinates
+          ["Driver 3", 19.035578, 73.02282], // Replace with actual coordinates
+          ["Driver 4", 19.00869, 73.10807], // Replace with actual coordinates
+          ["Driver 5", 19.077065, 72.998993], // Replace with actual coordinates
+        ];
+
+        // Add markers to the map
+        for (var i = 0; i < locations.length; i++) {
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map,
+            title: locations[i][0], // Set the label
+          });
+
+          // Add a click event listener to the marker
+          marker.addListener("click", function () {
+            var infowindow = new google.maps.InfoWindow({
+              content: this.title,
+            });
+            infowindow.open(map, this);
+          });
+        }
+      }
+    </script>
+    <!-- Your JavaScript file -->
+  </head>
+  <body>
+    <div id="map" style="height: 400px; width: 100%"></div>
+  </body>
+</html>

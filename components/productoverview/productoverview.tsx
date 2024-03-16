@@ -141,9 +141,12 @@ export default function DriverOverview() {
 
         {/* Product image */}
         <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
+          <div>
+            Driver: <strong>Online</strong>
+          </div>
           <div className="mt-8 border-b border-t border-gray-200 shadow-sm sm:rounded-lg sm:border">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.825875255995!2d73.05263317524917!3d19.027392982167235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c243f4be5555%3A0x643bf6aac93ffc16!2sCollege%20of%20Nursing%2C%20Navi%20Mumbai!5e0!3m2!1sen!2sin!4v1710425186292!5m2!1sen!2sin"
+              src="/driverlocation.html"
               width="100%"
               height="500"
               loading="lazy"

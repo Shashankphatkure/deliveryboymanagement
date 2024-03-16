@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Driver Route Planner</title>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+
+      #directions-panel {
+        font-family: Arial, sans-serif;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 10px;
+      }
+      #directions-panel b {
+        color: #333;
+        font-size: 16px;
+      }
+      #directions-panel br {
+        line-height: 1.5;
+      }
+    </style>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI&callback=initMap"
+      async
+      defer
+    ></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="directions-panel"></div>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 10,
+          center: { lat: 19.046707, lng: 73.08078 }, // Center the map on the first order
+        });
+
+        var orders = [
+          ["Order 1", 19.046707, 73.08078, "8433804507"],
+          ["Order 2", 19.00285, 73.014572, "8433804508"],
+          ["Order 3", 19.035578, 73.02282, "8433804509"],
+          ["Order 4", 19.00869, 73.10807, "8433804510"],
+          ["Order 5", 19.077065, 72.998993, "8433804511"],
+        ];
+
+        var directionsService = new google.maps.DirectionsService();
+        var directionsRenderer = new google.maps.DirectionsRenderer({
+          suppressMarkers: true, // This line prevents the route markers from being displayed
+          polylineOptions: {
+            strokeColor: "#FF0000", // Customize the color of the polyline
+          },
+        });
+        directionsRenderer.setMap(map);
+
+        var waypts = orders.slice(1).map(function (order) {
+          return {
+            location: new google.maps.LatLng(order[1], order[2]),
+            stopover: true,
+          };
+        });
+
+        directionsService.route(
+          {
+            origin: new google.maps.LatLng(orders[0][1], orders[0][2]),
+            destination: new google.maps.LatLng(
+              orders[orders.length - 1][1],
+              orders[orders.length - 1][2]
+            ),
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: "DRIVING",
+          },
+          function (response, status) {
+            if (status === "OK") {
+              directionsRenderer.setDirections(response);
+              var route = response.routes[0];
+              var summaryPanel = document.getElementById("directions-panel");
+              summaryPanel.innerHTML = "";
+
+              // For each route, display summary information including distance and duration.
+              for (var i = 0; i < route.legs.length; i++) {
+                var routeSegment = i + 1;
+                summaryPanel.innerHTML +=
+                  "<b>Route Segment: " + routeSegment + "</b><br>";
+                summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+                summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+                summaryPanel.innerHTML +=
+                  "Distance: " + route.legs[i].distance.text + "<br>";
+                summaryPanel.innerHTML +=
+                  "Duration: " + route.legs[i].duration.text + "<br><br>";
+              }
+
+              // Create markers for each order
+              orders.forEach(function (order, index) {
+                var marker = new google.maps.Marker({
+                  position: { lat: order[1], lng: order[2] },
+                  map: map,
+                  title: order[0],
+                });
+
+                // Create an info window for each marker
+                var infoWindow = new google.maps.InfoWindow({
+                  content:
+                    "<div><strong>Order ID:</strong> " +
+                    (index + 1) +
+                    "<br><strong>Phone Number:</strong> " +
+                    order[3] +
+                    "<br><strong>Route Segment:</strong> " +
+                    (index + 1) +
+                    "<br><strong>Distance:</strong> " +
+                    route.legs[index].distance.text +
+                    "<br><strong>Duration:</strong> " +
+                    route.legs[index].duration.text +
+                    "</div>",
+                });
+
+                // Set up click event listener for each marker
+                marker.addListener("click", function () {
+                  infoWindow.open(map, marker);
+                });
+              });
+            } else {
+              window.alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

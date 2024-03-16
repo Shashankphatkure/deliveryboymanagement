@@ -30,6 +30,7 @@ import DriverReview from "../driver/driverreview";
 import DriverOverview from "../productoverview/productoverview";
 import DriverPhoto from "../page-headings/headings";
 import TableCustomers from "../lists/tablecustomers";
+import EmbeddedContent from "../googlemaps/locations";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: ChartBarIcon, current: true },
@@ -330,6 +331,7 @@ export default function DashboardSidebar() {
             <DriverOverview />
             <TableOrders />
             <DriverReview />
+            <EmbeddedContent />
           </div>
         </main>
       </div>
