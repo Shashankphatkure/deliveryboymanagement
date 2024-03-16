@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shortest Route Map</title>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI&callback=initMap"
+    ></script>
+    <script>
+      function initMap() {
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 10,
+          center: { lat: 19.076, lng: 72.8777 }, // Center the map on the first location
+        });
+
+        directionsRenderer.setMap(map);
+
+        const waypoints = [
+          { location: { lat: 19.0062716, lng: 73.1077566 }, stopover: true }, // Khanda colony
+          { location: { lat: 19.0525298, lng: 73.0735111 }, stopover: true }, // Kharghar >
+          { location: { lat: 19.0335938, lng: 73.018164 }, stopover: true }, // Nerul >
+          { location: { lat: 19.0221923, lng: 73.0187376 }, stopover: true }, // Seawoods
+        ];
+
+        directionsService.route(
+          {
+            origin: {
+              lat: 18.9655888,
+              lng: 73.1028813,
+            }, // Origin, Panvel >
+            destination: {
+              lat: 19.075784,
+              lng: 72.9952364,
+            }, // Destination, Vashi >
+            waypoints: waypoints,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING,
+          },
+          (response, status) => {
+            if (status === "OK") {
+              directionsRenderer.setDirections(response);
+            } else {
+              window.alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    </script>
+  </body>
+</html>
