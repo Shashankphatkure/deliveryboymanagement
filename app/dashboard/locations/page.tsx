@@ -1,4 +1,5 @@
 import EmbeddedContent from "@/components/googlemaps/locations";
+import TableLocations from "@/components/lists/tablelocations";
 import React from "react";
 
 const page = () => {
@@ -11,6 +12,8 @@ const page = () => {
             width="100%"
             height="500px"
           ></iframe>
+          <div className="mt-6"></div>
+          <TableLocations />
         </div>
       </main>
     </div>

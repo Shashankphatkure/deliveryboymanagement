@@ -43,12 +43,7 @@ const navigation = [
     icon: UsersIcon,
     current: false,
   },
-  {
-    name: "Actions",
-    href: "/dashboard/actions",
-    icon: CursorArrowRaysIcon,
-    current: false,
-  },
+
   {
     name: "Reports",
     href: "/dashboard/reports",
