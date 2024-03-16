@@ -30,7 +30,7 @@ function classNames(...classes: any) {
 
 export default function DashboardStats() {
   return (
-    <div>
+    <div className="px-4 sm:px-6 lg:px-8">
       <h3 className="text-base font-semibold leading-6 text-gray-900">
         Last 30 days
       </h3>

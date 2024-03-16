@@ -1,4 +1,5 @@
 import { supabase } from "../../utils/supabase/supabase";
+import OrderType from "../forms/selectmenus/selectmenu";
 
 async function getData() {
   // Fetch data from the blogs table
@@ -41,7 +42,6 @@ export default async function TableOrders() {
             email and role.
           </p>
         </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"></div>
       </div>
       <div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
