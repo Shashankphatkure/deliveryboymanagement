@@ -1,16 +1,20 @@
-const people = [
-  {
-    name: "Lindsay Walton",
-    address: "Hari niwas, 404, Sector 23",
-    email: "lindsay.walton@example.com",
-    status: "Active",
-    city: "Kharghar",
-    phone: 8433804507,
-  },
-  // More people...
-];
+import { supabase } from "../../utils/supabase/supabase";
 
-export default function TableLocations() {
+async function getData() {
+  // Fetch data from the blogs table
+  const { data, error } = await supabase.from("locations").select(`*`);
+
+  if (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+
+  return data;
+}
+
+export default async function TableLocations() {
+  const data = await getData();
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -42,12 +46,6 @@ export default function TableLocations() {
                     <th
                       scope="col"
                       className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                       City
                     </th>
@@ -87,16 +85,13 @@ export default function TableLocations() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
+                  {data.map((person) => (
                     <tr key={person.email}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {person.name}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {person.city}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.phone}
+                        {person.phonenumber}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {person.address}

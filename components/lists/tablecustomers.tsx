@@ -1,16 +1,23 @@
-const people = [
-  {
-    name: "Lindsay Walton",
-    address: "Hari niwas, 404, Sector 23",
-    email: "lindsay.walton@example.com",
-    status: "Active",
-    city: "Kharghar",
-    phone: 8433804507,
-  },
-  // More people...
-];
+import { supabase } from "../../utils/supabase/supabase";
 
-export default function TableCustomers() {
+async function getData() {
+  // Fetch data from the blogs table
+  const { data, error } = await supabase
+    .from("customers")
+    .select(`*`)
+    .order("status", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+
+  return data;
+}
+
+export default async function TableCustomers() {
+  const data = await getData();
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -87,7 +94,7 @@ export default function TableCustomers() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
+                  {data.map((person) => (
                     <tr key={person.email}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                         {person.name}
@@ -99,7 +106,7 @@ export default function TableCustomers() {
                         {person.phone}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.address}
+                        {person.homeaddress}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {person.email}

@@ -1,23 +1,36 @@
-const people = [
-  {
-    name: "150",
-    address: "Hari niwas, 404, Sector 23",
-    driver: "Shashank Phatkure",
-    status: "Active",
-    city: "Kharghar",
-    amount: 500,
-    phone: 8433804507,
-    date: "23rd March",
-  },
-  // More people...
-];
+import { supabase } from "../../utils/supabase/supabase";
 
-export default function TableOrdersunassigned() {
+async function getData() {
+  // Fetch data from the blogs table
+  const { data, error } = await supabase.from("order").select(
+    `
+  *,
+  customers:customerid (
+    name,
+    phone,
+    homeaddress
+  ),
+  drivers:drivers (
+    name
+  )
+`
+  );
+
+  if (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+
+  return data;
+}
+
+export default async function TableOrders() {
+  const data = await getData();
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 text-gray-900">
+          <h1 className="text-base font-semibold leading-6 text-red-600">
             All Unassigned Orders
           </h1>
           <p className="mt-2 text-sm text-gray-700">
@@ -44,7 +57,14 @@ export default function TableOrdersunassigned() {
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Name
+                      Created At
+                    </th>
+
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Customer Name
                     </th>
 
                     <th
@@ -65,7 +85,7 @@ export default function TableOrdersunassigned() {
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Assigned Driver
+                      Driver
                     </th>
                     <th
                       scope="col"
@@ -88,22 +108,25 @@ export default function TableOrdersunassigned() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
-                    <tr key={person.driver}>
+                  {data.map((person) => (
+                    <tr key={person.id}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        #{person.name}, {person.date}
+                        #{person.id}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.city}
+                        {person.created_at}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.phone}
+                        {person.customers.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.address}
+                        {person.customers.phone}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.driver}
+                        {person.customers.homeaddress}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {person.drivers.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {person.amount}/-
