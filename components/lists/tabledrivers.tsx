@@ -2,7 +2,11 @@ import { supabase } from "../../utils/supabase/supabase";
 
 async function getData() {
   // Fetch data from the blogs table
-  const { data, error } = await supabase.from("drivers").select(`*`);
+  const { data, error } = await supabase
+    .from("drivers")
+    .select(`*`)
+    .order("status", { ascending: true })
+    .order("name", { ascending: true });
 
   if (error) {
     console.error("Error fetching data:", error);

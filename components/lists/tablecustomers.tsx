@@ -5,7 +5,8 @@ async function getData() {
   const { data, error } = await supabase
     .from("customers")
     .select(`*`)
-    .order("status", { ascending: true });
+    .order("status", { ascending: true })
+    .order("name", { ascending: true });
 
   if (error) {
     console.error("Error fetching data:", error);
