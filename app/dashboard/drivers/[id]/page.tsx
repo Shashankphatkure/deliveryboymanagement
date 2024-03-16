@@ -1,9 +1,12 @@
 import { supabase } from "../../../../utils/supabase/supabase";
 import DriverReview from "@/components/driver/driverreview";
-import EmbeddedContent from "@/components/googlemaps/locations";
 import TableOrders from "@/components/lists/tableorders";
 import DriverPhoto from "@/components/page-headings/headings";
 import DriverOverview from "@/components/productoverview/productoverview";
+
+interface Params {
+  id: number;
+}
 
 async function getData(id: number) {
   // Fetch blog data along with the user's information using a single query
@@ -21,7 +24,7 @@ async function getData(id: number) {
   return blogs;
 }
 
-const page = async ({ params }) => {
+const page = async ({ params }: { params: Params }) => {
   const item = await getData(params.id);
 
   return (

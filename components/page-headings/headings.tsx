@@ -1,4 +1,15 @@
-export default function DriverPhoto({ driver }) {
+interface Driver {
+  vehiclenumber: string;
+  vehiclecolor: string;
+  created_at: string;
+  // Add other properties as needed
+}
+
+interface DriverPhotoProps {
+  driver: Driver;
+}
+
+export default function DriverPhoto({ driver }: DriverPhotoProps) {
   return (
     <div className="md:flex md:items-center md:justify-between md:space-x-5">
       <div className="flex items-start space-x-5">

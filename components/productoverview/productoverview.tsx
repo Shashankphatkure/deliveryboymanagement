@@ -23,6 +23,16 @@ import { RadioGroup } from "@headlessui/react";
 import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 import DriverPhoto from "../page-headings/headings";
 
+interface Driver {
+  name: string;
+  status: string;
+  // Add other properties as needed
+}
+
+interface DriverOverviewProps {
+  driver: Driver;
+}
+
 const product = {
   name: "Driver Fullname",
   href: "#",
@@ -48,7 +58,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DriverOverview({ driver }) {
+export default function DriverOverview({ driver }: DriverOverviewProps) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
 
   return (
