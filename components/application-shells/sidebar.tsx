@@ -29,6 +29,7 @@ import Ordersummary from "../ordersummaries/ordersummaries";
 import DriverReview from "../driver/driverreview";
 import DriverOverview from "../productoverview/productoverview";
 import DriverPhoto from "../page-headings/headings";
+import TableCustomers from "../lists/tablecustomers";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: ChartBarIcon, current: true },
