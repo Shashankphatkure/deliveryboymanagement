@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps Distance Calculator</title>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="msg"></div>
+
+    <script>
+      // Initialize the map
+      function initMap() {
+        const center = { lat: 40.774102, lng: -73.971734 };
+        const options = { zoom: 15, scaleControl: true, center: center };
+        const map = new google.maps.Map(
+          document.getElementById("map"),
+          options
+        );
+
+        // Define coordinates
+        const dakota = { lat: 40.7767644, lng: -73.9761399 };
+        const frick = { lat: 40.771209, lng: -73.9673991 };
+
+        // Add markers
+        const mk1 = new google.maps.Marker({ position: dakota, map: map });
+        const mk2 = new google.maps.Marker({ position: frick, map: map });
+
+        // Calculate straight-line distance using Haversine formula
+        function haversine_distance(mk1, mk2) {
+          var R = 3958.8; // Radius of the Earth in miles
+          var rlat1 = mk1.position.lat() * (Math.PI / 180); // Convert degrees to radians
+          var rlat2 = mk2.position.lat() * (Math.PI / 180); // Convert degrees to radians
+          var difflat = rlat2 - rlat1; // Radian difference (latitudes)
+          var difflon =
+            (mk2.position.lng() - mk1.position.lng()) * (Math.PI / 180); // Radian difference (longitudes)
+
+          var d =
+            2 *
+            R *
+            Math.asin(
+              Math.sqrt(
+                Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+                  Math.cos(rlat1) *
+                    Math.cos(rlat2) *
+                    Math.sin(difflon / 2) *
+                    Math.sin(difflon / 2)
+              )
+            );
+          return d;
+        }
+
+        // Calculate driving distance and time
+        var directionsService = new google.maps.DirectionsService();
+        var request = {
+          origin: dakota,
+          destination: frick,
+          travelMode: "DRIVING",
+        };
+
+        directionsService.route(request, function (result, status) {
+          if (status == "OK") {
+            var distance = result.routes[0].legs[0].distance.text;
+            var duration = result.routes[0].legs[0].duration.text;
+            document.getElementById("msg").innerHTML =
+              "Driving distance: " + distance + "<br>Driving time: " + duration;
+          }
+        });
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI&callback=initMap"
+    ></script>
+  </body>
+</html>

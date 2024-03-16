@@ -1,3 +1,4 @@
+import DashboardStats from "@/components/datadisplay/stat";
 import TableOrders from "@/components/lists/tableorders";
 import TableOrdersrunning from "@/components/lists/tableordersrunning";
 import TableOrdersunassigned from "@/components/lists/tableordersunasigned";
@@ -7,6 +8,8 @@ const page = () => {
   return (
     <main className="py-10 lg:pl-72">
       <div className="px-4 sm:px-6 lg:px-8">
+        <DashboardStats />
+        <div className="mt-6"></div>
         <TableOrdersunassigned />
       </div>
       <div className="px-4 sm:px-6 lg:px-8 mt-6">
