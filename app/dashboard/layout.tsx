@@ -232,7 +232,7 @@ export default function DashboardLayout({
                       alt=""
                     />
                     <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Tom Cook</span>
+                    <span aria-hidden="true">Manager</span>
                   </a>
                 </li>
               </ul>

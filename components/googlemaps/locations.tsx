@@ -3,7 +3,11 @@ import React from "react";
 
 const EmbeddedContent = () => {
   return (
-    <iframe src="/distancefromstore.html" width="100%" height="500px"></iframe>
+    <iframe
+      src="/singleorderdistance.html"
+      width="100%"
+      height="500px"
+    ></iframe>
   );
 };
 
