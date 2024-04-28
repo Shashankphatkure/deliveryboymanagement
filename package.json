@@ -9,6 +9,7 @@
     "@googlemaps/js-api-loader": "^1.16.6",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
+    "@react-google-maps/api": "^2.19.3",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "@tailwindcss/aspect-ratio": "^0.4.2",
