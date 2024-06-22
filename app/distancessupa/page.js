@@ -155,6 +155,21 @@ export default function MapComponent() {
     };
   };
 
+  const handleCancelOrder = async () => {
+    try {
+      // Delete all rows where status is "pending"
+      await supabase.from("routes").delete().eq("status", "pending");
+
+      console.log("All pending orders have been cancelled.");
+
+      // Redirect to the specified URL
+      window.location.href =
+        "https://app.appsmith.com/app/createorder-663bd6bc64694d0878426507";
+    } catch (error) {
+      console.error("Error cancelling orders:", error);
+    }
+  };
+
   return (
     <div>
       <div
@@ -183,7 +198,7 @@ export default function MapComponent() {
       </button>
 
       <button
-        onClick={() => (window.location.href = "/dragdrop")}
+        onClick={handleCancelOrder}
         className="btn-style mx-6 my-6 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg"
       >
         Cancel Complete Order
