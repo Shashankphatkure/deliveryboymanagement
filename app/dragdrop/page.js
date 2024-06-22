@@ -41,15 +41,32 @@ export default function TableCustomers() {
       const [draggedItem] = updatedData.splice(draggedIndex, 1);
       updatedData.splice(targetIndex, 0, draggedItem);
 
+      // Update "order" values based on new position
+      updatedData.forEach((item, index) => {
+        item.order = index;
+      });
+
+      // Update "afterTo" values based on new position
+      updatedData.forEach((item, index) => {
+        if (index === updatedData.length - 1) {
+          item.afterTo = "Return store";
+        } else {
+          item.afterTo = updatedData[index + 1].start;
+        }
+      });
+
       try {
         await Promise.all(
-          updatedData.map((item, index) =>
-            supabase.from("routes").update({ order: index }).eq("id", item.id)
+          updatedData.map((item) =>
+            supabase
+              .from("routes")
+              .update({ order: item.order, afterTo: item.afterTo })
+              .eq("id", item.id)
           )
         );
         setData(updatedData);
       } catch (error) {
-        console.error("Error updating order:", error);
+        console.error("Error updating order and afterTo:", error);
       }
     }
   };
