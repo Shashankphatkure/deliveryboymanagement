@@ -11,7 +11,7 @@ async function getData() {
   // Fetch data from the blogs table
   const { data, error } = await supabase
     .from("bulkordertest_duplicate")
-    .select(`customersorderarray`)
+    .select(`customersorderarray, driverid`)
     .eq("id", 1);
 
   if (error) {
@@ -88,7 +88,7 @@ export default function MapComponent() {
             (leg) => leg.start_address + " to " + leg.end_address
           );
           // Send data to Supabase
-          sendDataToSupabase(distance, infoArray);
+          sendDataToSupabase(distance, infoArray, data[0].driverid);
         } else {
           window.alert("Directions request failed due to " + status);
         }
@@ -96,7 +96,7 @@ export default function MapComponent() {
     );
   };
 
-  const sendDataToSupabase = async (distance, info) => {
+  const sendDataToSupabase = async (distance, info, driverid) => {
     // Process the info array to extract the part after "to" and the start part
     const afterToArray = info.map((item) => {
       const afterTo = item.split(" to ")[1]; // Split the string and take the second part
@@ -115,6 +115,7 @@ export default function MapComponent() {
       info: info,
       afterTo: afterTo,
       start: startArray[index], // Include the start address
+      driverid: driverid, // Include the driverid
     }));
 
     // Insert each item of afterToArray as a new row in Supabase
