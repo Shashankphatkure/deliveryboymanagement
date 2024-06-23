@@ -111,8 +111,8 @@ export default function TableCustomers() {
   };
 
   return (
-    <div>
-      <table className="min-w-full divide-y divide-gray-300">
+    <div className="p-6">
+      <table className="min-w-full divide-y divide-gray-300 border border-gray-300">
         <tbody className="divide-y divide-gray-200 bg-white">
           <AnimatePresence>
             {data.map((item, index) => (
@@ -122,8 +122,9 @@ export default function TableCustomers() {
                 dragConstraints={dragConstraints}
                 variants={variants}
                 onDragEnd={(event, info) => handleDragEnd(event, info, index)}
+                className="hover:bg-gray-100"
               >
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
                   {item.start}
                 </td>
               </motion.tr>
