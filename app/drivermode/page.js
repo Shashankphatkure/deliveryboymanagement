@@ -76,46 +76,63 @@ const LocationDistanceChecker = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="bg-blue-600 text-white px-6 py-4">
-          <h1 className="text-2xl font-bold">Distance Checker</h1>
-        </div>
-        <div className="p-6">
-          {isNearMall === null ? (
-            <p className="text-gray-600">Checking distance...</p>
-          ) : isNearMall ? (
-            <p className="text-green-600 font-semibold">You are near Store.</p>
-          ) : (
-            <div>
-              <p className="text-red-600 font-semibold">
-                You are very far from Store.
+    <div>
+      <div className="flex items-center justify-center pt-6 bg-gray-100">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-blue-600 text-white px-6 py-4">
+            <h1 className="text-2xl font-bold">Distance Checker</h1>
+          </div>
+          <div className="p-6">
+            {isNearMall === null ? (
+              <p className="text-gray-600">Checking distance...</p>
+            ) : isNearMall ? (
+              <p className="text-green-600 font-semibold">
+                You are near Store.
               </p>
+            ) : (
+              <div>
+                <p className="text-red-600 font-semibold">
+                  You are very far from Store.
+                </p>
 
-              <button
-                className="mt-6 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-                onClick={() =>
-                  (window.location.href =
-                    "https://www.google.com/maps/dir/19.0715468,73.0995525/dmart+kharghar/@19.060194,73.0664356,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x3be7c0b67daa9095:0xe3fa324f9ec2af96!2m2!1d73.0769246!2d19.0421731?entry=ttu")
-                }
-              >
-                Navigate to Store
-              </button>
-            </div>
-          )}
+                <button
+                  className="mt-6 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                  onClick={() =>
+                    (window.location.href =
+                      "https://www.google.com/maps/dir/19.0715468,73.0995525/dmart+kharghar/@19.060194,73.0664356,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x3be7c0b67daa9095:0xe3fa324f9ec2af96!2m2!1d73.0769246!2d19.0421731?entry=ttu")
+                  }
+                >
+                  Navigate to Store
+                </button>
+              </div>
+            )}
 
-          <button
-            onClick={refresh}
-            className="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-          >
-            Refresh page
-          </button>
-          <button
-            onClick={handleCloseWindow}
-            className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-          >
-            Close Window ( Login later )
-          </button>
+            <button
+              onClick={refresh}
+              className="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+            >
+              Refresh page
+            </button>
+            <button
+              onClick={handleCloseWindow}
+              className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+            >
+              Close Window ( Login later )
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center pt-6 pb-20 bg-gray-100">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-blue-600 text-white px-6 py-4">
+            <h1 className="text-2xl font-bold">Safety check before starting</h1>
+          </div>
+          <div className="p-6">
+            <p className="">1. Wear our brand Tshirt</p>
+            <p className="">2. Keep location on during delivery</p>
+            <p className="">3. Drive Safely</p>
+          </div>
         </div>
       </div>
     </div>
