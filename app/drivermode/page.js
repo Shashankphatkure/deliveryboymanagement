@@ -2,6 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 
+import { createClient } from "@supabase/supabase-js";
+import { useSearchParams } from "next/navigation";
+
+const supabase = createClient(
+  "https://sxgahulciuptxhpvdkcv.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4Z2FodWxjaXVwdHhocHZka2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk0MTAxMjcsImV4cCI6MjAyNDk4NjEyN30.8bUu7eSxcN30rYwtF576HeQnfaBUKVNpHEYPFugQqo8"
+);
+
 const LocationDistanceChecker = () => {
   const [isNearMall, setIsNearMall] = useState(null);
 
@@ -31,7 +39,7 @@ const LocationDistanceChecker = () => {
           );
 
           // Seawoods Grand Central Mall coordinates
-          const mallLocation = new google.maps.LatLng(19.04939, 79.06527);
+          const mallLocation = new google.maps.LatLng(19.04939, 73.065269);
 
           const service = new google.maps.DistanceMatrixService();
           service.getDistanceMatrix(
@@ -41,7 +49,7 @@ const LocationDistanceChecker = () => {
               travelMode: "DRIVING",
               unitSystem: google.maps.UnitSystem.METRIC,
             },
-            (response, status) => {
+            async (response, status) => {
               if (status === "OK") {
                 const distance =
                   response.rows[0].elements[0].distance.value / 1000; // Convert meters to kilometers
@@ -52,6 +60,10 @@ const LocationDistanceChecker = () => {
                     ? "User is near the store"
                     : "User is very far from the store"
                 );
+
+                if (isNear) {
+                  await createAttendanceRecord();
+                }
               } else {
                 console.error("Error calculating distance:", status);
               }
@@ -73,6 +85,23 @@ const LocationDistanceChecker = () => {
 
   const refresh = () => {
     window.location.reload();
+  };
+
+  const createAttendanceRecord = async () => {
+    const now = new Date();
+    const { data, error } = await supabase.from("driverattendance").insert([
+      {
+        ontime: now.toTimeString().split(" ")[0],
+        date: now.toISOString().split("T")[0],
+        // driveremail: email,
+      },
+    ]);
+
+    if (error) {
+      console.error("Error creating attendance record:", error);
+    } else {
+      console.log("Attendance record created successfully:", data);
+    }
   };
 
   return (
