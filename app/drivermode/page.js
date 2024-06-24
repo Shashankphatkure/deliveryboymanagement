@@ -67,6 +67,10 @@ const LocationDistanceChecker = () => {
     }
   };
 
+  const handleCloseWindow = () => {
+    window.close();
+  };
+
   return (
     <div>
       <h1 style={{ fontWeight: "bold" }} className="mx-4 my-4">
@@ -93,6 +97,7 @@ const LocationDistanceChecker = () => {
           .
         </p>
       )}
+      <button onClick={handleCloseWindow}>Close Window</button>
     </div>
   );
 };
