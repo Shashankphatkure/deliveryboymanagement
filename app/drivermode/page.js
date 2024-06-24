@@ -82,19 +82,30 @@ const LocationDistanceChecker = () => {
             <p className="text-gray-600">Checking distance...</p>
           ) : isNearMall ? (
             <p className="text-green-600 font-semibold">
-              You are near Seawoods Grand Central Mall (within 10km).
+              You are near Store (within 10km).
             </p>
           ) : (
-            <p className="text-red-600 font-semibold">
-              You are very far from Seawoods Grand Central Mall (more than 10km
-              away).
-            </p>
+            <div>
+              <p className="text-red-600 font-semibold">
+                You are very far from Store (more than 10km away).
+              </p>
+
+              <button
+                className="mt-6 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                onClick={() =>
+                  (window.location.href =
+                    "https://www.google.com/maps/dir/19.0715468,73.0995525/dmart+kharghar/@19.060194,73.0664356,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x3be7c0b67daa9095:0xe3fa324f9ec2af96!2m2!1d73.0769246!2d19.0421731?entry=ttu")
+                }
+              >
+                Navigate to Store
+              </button>
+            </div>
           )}
           <button
             onClick={handleCloseWindow}
             className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
           >
-            Close Window
+            Close Window ( Login later )
           </button>
         </div>
       </div>
