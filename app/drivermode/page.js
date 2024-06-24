@@ -85,13 +85,11 @@ const LocationDistanceChecker = () => {
           {isNearMall === null ? (
             <p className="text-gray-600">Checking distance...</p>
           ) : isNearMall ? (
-            <p className="text-green-600 font-semibold">
-              You are near Store (within 10km).
-            </p>
+            <p className="text-green-600 font-semibold">You are near Store.</p>
           ) : (
             <div>
               <p className="text-red-600 font-semibold">
-                You are very far from Store (more than 10km away).
+                You are very far from Store.
               </p>
 
               <button
