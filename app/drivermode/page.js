@@ -72,32 +72,32 @@ const LocationDistanceChecker = () => {
   };
 
   return (
-    <div>
-      <h1 style={{ fontWeight: "bold" }} className="mx-4 my-4">
-        Distance Checker
-      </h1>
-      {isNearMall === null ? (
-        <p className="mx-4 my-4">Checking distance...</p>
-      ) : isNearMall ? (
-        <p
-          className="mx-4 my-4"
-          style={{ color: "indigo", fontWeight: "bold" }}
-        >
-          You are near Store (within 10km).
-        </p>
-      ) : (
-        <p className="mx-4 my-4">
-          You are very far from Store (more than 10km away).{" "}
-          <a
-            style={{ color: "green", fontWeight: "bold" }}
-            href="https://www.google.com/maps/dir//dmart+kharghar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be7c0b67daa9095:0xe3fa324f9ec2af96?sa=X&ved=1t:3061&ictx=111"
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-blue-600 text-white px-6 py-4">
+          <h1 className="text-2xl font-bold">Distance Checker</h1>
+        </div>
+        <div className="p-6">
+          {isNearMall === null ? (
+            <p className="text-gray-600">Checking distance...</p>
+          ) : isNearMall ? (
+            <p className="text-green-600 font-semibold">
+              You are near Seawoods Grand Central Mall (within 10km).
+            </p>
+          ) : (
+            <p className="text-red-600 font-semibold">
+              You are very far from Seawoods Grand Central Mall (more than 10km
+              away).
+            </p>
+          )}
+          <button
+            onClick={handleCloseWindow}
+            className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
           >
-            Show Map
-          </a>
-          .
-        </p>
-      )}
-      <button onClick={handleCloseWindow}>Close Window</button>
+            Close Window
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
