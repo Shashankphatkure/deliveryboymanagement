@@ -97,6 +97,8 @@ const LocationDistanceChecker = () => {
       },
     ]);
 
+    handleCloseWindow();
+
     if (error) {
       console.error("Error creating attendance record:", error);
     } else {
