@@ -71,6 +71,38 @@ export default function TableCustomers() {
     }
   };
 
+  const updateRoutesWithDistanceAndTime = async () => {
+    const origins = data.map((item) => item.start);
+    const destinations = [...origins.slice(1), "Return store"];
+
+    const distanceMatrix = await calculateDistanceAndTime(
+      origins,
+      destinations
+    );
+
+    if (distanceMatrix) {
+      const updatedData = data.map((item, index) => ({
+        ...item,
+        distance: distanceMatrix[index].distance.text,
+        time: distanceMatrix[index].duration.text,
+      }));
+
+      try {
+        await Promise.all(
+          updatedData.map((item) =>
+            supabase
+              .from("routes")
+              .update({ distance: item.distance, time: item.time })
+              .eq("id", item.id)
+          )
+        );
+        setData(updatedData);
+      } catch (error) {
+        console.error("Error updating distance and time:");
+      }
+    }
+  };
+
   const handleCreateOrder = async () => {
     try {
       await Promise.all(
@@ -82,6 +114,8 @@ export default function TableCustomers() {
         )
       );
       setStatus("assigned"); // Update local status
+
+      await updateRoutesWithDistanceAndTime();
 
       // Redirect to the specified URL
       window.location.assign(
