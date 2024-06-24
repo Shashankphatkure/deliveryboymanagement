@@ -71,6 +71,10 @@ const LocationDistanceChecker = () => {
     window.close();
   };
 
+  const refresh = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
@@ -101,6 +105,13 @@ const LocationDistanceChecker = () => {
               </button>
             </div>
           )}
+
+          <button
+            onClick={refresh}
+            className="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+          >
+            Refresh page
+          </button>
           <button
             onClick={handleCloseWindow}
             className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
