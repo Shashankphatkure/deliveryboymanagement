@@ -130,7 +130,7 @@ const LocationDistanceChecker = () => {
           </div>
           <div className="p-6">
             <p className="">1. Wear our brand Tshirt</p>
-            <p className="">2. Keep location on during delivery</p>
+            <p className="">2. Keep location ON during delivery</p>
             <p className="">3. Drive Safely</p>
           </div>
         </div>
