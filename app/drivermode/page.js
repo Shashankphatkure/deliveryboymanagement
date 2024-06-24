@@ -12,6 +12,8 @@ const supabase = createClient(
 
 const LocationDistanceChecker = () => {
   const [isNearMall, setIsNearMall] = useState(null);
+  // const searchParams = useSearchParams();
+  // const email = searchParams.get("email");
 
   useEffect(() => {
     // Load Google Maps API script
