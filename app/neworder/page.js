@@ -69,7 +69,6 @@ const RouteOptimizer = () => {
       return;
     }
 
-    // Check if at least one customer has been selected
     if (selectedCustomers.length === 0) {
       alert("Please select at least one customer.");
       return;
@@ -139,34 +138,6 @@ const RouteOptimizer = () => {
     setShowPopup(false);
     setSelectedCustomers([]);
     setSelectedDriver("");
-  };
-
-  // Helper function to get distance and time
-  const getDistanceAndTime = (service, origin, destination) => {
-    return new Promise((resolve, reject) => {
-      service.getDistanceMatrix(
-        {
-          origins: [origin],
-          destinations: [destination],
-          travelMode: "DRIVING",
-        },
-        (response, status) => {
-          if (status === "OK") {
-            const { distance, duration } = response.rows[0].elements[0];
-            resolve({
-              distance: distance.text,
-              duration: duration.text,
-            });
-          } else {
-            reject(
-              new Error(
-                "Distance Matrix was not successful for the following reason: "
-              )
-            );
-          }
-        }
-      );
-    });
   };
 
   const safeString = (value) => (value || "").toString().toLowerCase();

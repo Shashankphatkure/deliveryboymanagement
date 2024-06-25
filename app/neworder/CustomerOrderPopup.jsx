@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
   const [sortedCustomers, setSortedCustomers] = useState([]);
@@ -18,7 +18,7 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
   }, [isLoaded, customers]);
 
   const sortCustomersByDistance = async () => {
-    const shopAddress = "Panvel"; // Replace with your shop's address
+    const shopAddress = "Panvel, Mumbai";
     const geocoder = new window.google.maps.Geocoder();
     const distanceMatrixService =
       new window.google.maps.DistanceMatrixService();
@@ -31,12 +31,12 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
           geocoder,
           customer.homeaddress
         );
-        const distance = await getDistance(
+        const { distance, duration } = await getDistanceAndTime(
           distanceMatrixService,
           shopCoords,
           customerCoords
         );
-        return { ...customer, distance };
+        return { ...customer, distance, duration };
       })
     );
 
@@ -62,7 +62,7 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
     });
   };
 
-  const getDistance = (service, origin, destination) => {
+  const getDistanceAndTime = (service, origin, destination) => {
     return new Promise((resolve, reject) => {
       service.getDistanceMatrix(
         {
@@ -72,7 +72,11 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
         },
         (response, status) => {
           if (status === "OK") {
-            resolve(response.rows[0].elements[0].distance.value);
+            const { distance, duration } = response.rows[0].elements[0];
+            resolve({
+              distance: distance.text,
+              duration: duration.text,
+            });
           } else {
             reject(
               new Error(
@@ -118,6 +122,8 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
               <p className="font-semibold">{customer.name}</p>
               <p className="text-sm">{customer.homeaddress}</p>
               <p className="text-sm">{customer.phone}</p>
+              <p className="text-sm">Distance: {customer.distance}</p>
+              <p className="text-sm">Duration: {customer.duration}</p>
             </motion.div>
           ))}
         </motion.div>
