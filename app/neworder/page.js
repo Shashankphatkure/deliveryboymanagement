@@ -69,7 +69,6 @@ const RouteOptimizer = () => {
       return;
     }
 
-    // Check if at least one customer has been selected
     if (selectedCustomers.length === 0) {
       alert("Please select at least one customer.");
       return;
@@ -98,10 +97,44 @@ const RouteOptimizer = () => {
     setShowPopup(true);
   };
 
-  const handleCreateOrder = (sortedCustomers) => {
-    // Implement your logic to create a new order with the sorted customers
-    console.log("Creating new order with sorted customers:", sortedCustomers);
-    // Reset state and close popup
+  const handleCreateOrder = async (sortedCustomers) => {
+    const shopAddress = "Panvel, Mumbai";
+    const orders = [];
+
+    for (let i = 0; i <= sortedCustomers.length; i++) {
+      const start = i === 0 ? shopAddress : sortedCustomers[i - 1].homeaddress;
+      const destination =
+        i === sortedCustomers.length
+          ? shopAddress
+          : sortedCustomers[i].homeaddress;
+      const customerId =
+        i === sortedCustomers.length ? null : sortedCustomers[i].id;
+
+      if (start !== destination) {
+        const order = {
+          driverid: parseInt(selectedDriver),
+          customerid: customerId,
+          start,
+          destination,
+          distance:
+            i === sortedCustomers.length ? null : sortedCustomers[i].distance,
+          time:
+            i === sortedCustomers.length ? null : sortedCustomers[i].duration,
+        };
+        orders.push(order);
+      }
+    }
+
+    try {
+      const { data, error } = await supabase.from("orders").insert(orders);
+      if (error) throw error;
+      console.log("Orders created successfully:", data);
+      alert("Orders created successfully!");
+    } catch (error) {
+      console.error("Error creating orders:", error);
+      alert("Error creating orders. Please try again.");
+    }
+
     setShowPopup(false);
     setSelectedCustomers([]);
     setSelectedDriver("");
