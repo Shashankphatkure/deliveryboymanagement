@@ -64,6 +64,17 @@ const RouteOptimizer = () => {
   };
 
   const handleOptimizeRoutes = async () => {
+    if (!selectedDriver) {
+      alert("Please select a driver.");
+      return;
+    }
+
+    // Check if at least one customer has been selected
+    if (selectedCustomers.length === 0) {
+      alert("Please select at least one customer.");
+      return;
+    }
+
     const selectedDriverData = drivers.find(
       (d) => d.id.toString() === selectedDriver
     );
