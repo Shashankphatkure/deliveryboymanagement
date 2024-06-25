@@ -20,6 +20,13 @@ const DriverPaymentsClient = ({ driverId }) => {
     if (driverId) {
       setDriverEmail(decodeURIComponent(driverId));
     }
+
+    // Set default dates
+    const today = new Date();
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    setStartDate(firstDayOfMonth.toISOString().split("T")[0]);
+    setEndDate(today.toISOString().split("T")[0]);
   }, [driverId]);
 
   const fetchPayments = async () => {
@@ -49,7 +56,9 @@ const DriverPaymentsClient = ({ driverId }) => {
   };
 
   useEffect(() => {
-    fetchPayments();
+    if (driverEmail && startDate && endDate) {
+      fetchPayments();
+    }
   }, [driverEmail, startDate, endDate]);
 
   const handleStartDateChange = (e) => setStartDate(e.target.value);
