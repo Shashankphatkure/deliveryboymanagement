@@ -39,7 +39,7 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
     );
 
     const sorted = customersWithDistance.sort(
-      (a, b) => a.distance - b.distance
+      (a, b) => a.distance - b.duration
     );
     setSortedCustomers(sorted);
   };
