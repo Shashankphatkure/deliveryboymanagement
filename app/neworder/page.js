@@ -101,6 +101,9 @@ const RouteOptimizer = () => {
     const shopAddress = "Panvel, Mumbai";
     const orders = [];
 
+    // Create a Google Maps Distance Matrix Service
+    const distanceMatrixService = new google.maps.DistanceMatrixService();
+
     for (let i = 0; i <= sortedCustomers.length; i++) {
       const start = i === 0 ? shopAddress : sortedCustomers[i - 1].homeaddress;
       const destination =
@@ -111,15 +114,20 @@ const RouteOptimizer = () => {
         i === sortedCustomers.length ? null : sortedCustomers[i].id;
 
       if (start !== destination) {
+        // Calculate distance and time for this leg
+        const { distance, duration } = await getDistanceAndTime(
+          distanceMatrixService,
+          start,
+          destination
+        );
+
         const order = {
           driverid: parseInt(selectedDriver),
           customerid: customerId,
           start,
           destination,
-          distance:
-            i === sortedCustomers.length ? null : sortedCustomers[i].distance,
-          time:
-            i === sortedCustomers.length ? null : sortedCustomers[i].duration,
+          distance,
+          time: duration,
         };
         orders.push(order);
       }
@@ -138,6 +146,35 @@ const RouteOptimizer = () => {
     setShowPopup(false);
     setSelectedCustomers([]);
     setSelectedDriver("");
+  };
+
+  // Helper function to get distance and time
+  const getDistanceAndTime = (service, origin, destination) => {
+    return new Promise((resolve, reject) => {
+      service.getDistanceMatrix(
+        {
+          origins: [origin],
+          destinations: [destination],
+          travelMode: "DRIVING",
+        },
+        (response, status) => {
+          if (status === "OK") {
+            const { distance, duration } = response.rows[0].elements[0];
+            resolve({
+              distance: distance.text,
+              duration: duration.text,
+            });
+          } else {
+            reject(
+              new Error(
+                "Distance Matrix was not successful for the following reason: " +
+                  status
+              )
+            );
+          }
+        }
+      );
+    });
   };
 
   const safeString = (value) => (value || "").toString().toLowerCase();
