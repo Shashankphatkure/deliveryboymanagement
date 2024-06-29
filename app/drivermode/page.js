@@ -41,7 +41,7 @@ const LocationDistanceChecker = () => {
           );
 
           // Seawoods Grand Central Mall coordinates
-          const mallLocation = new google.maps.LatLng(19.04939, 73.065269);
+          const mallLocation = new google.maps.LatLng(19.02563, 73.04896);
 
           const service = new google.maps.DistanceMatrixService();
           service.getDistanceMatrix(
@@ -100,7 +100,7 @@ const LocationDistanceChecker = () => {
     ]);
 
     handleCloseWindow();
-
+    s;
     if (error) {
       console.error("Error creating attendance record:", error);
     } else {

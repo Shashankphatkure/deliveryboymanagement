@@ -28,7 +28,7 @@ const RouteOptimizer = () => {
   const fetchDrivers = async () => {
     const { data, error } = await supabase
       .from("drivers")
-      .select("id, name, city, vehicle, status, phone")
+      .select("id, name, city, vehicle, status, phone, email")
       .order("name");
 
     if (error) {
@@ -101,6 +101,11 @@ const RouteOptimizer = () => {
     const shopAddress = "Panvel, Mumbai";
     const orders = [];
 
+    // Get the selected driver's data
+    const selectedDriverData = drivers.find(
+      (d) => d.id.toString() === selectedDriver
+    );
+
     // Create a Google Maps Distance Matrix Service
     const distanceMatrixService = new google.maps.DistanceMatrixService();
 
@@ -112,6 +117,8 @@ const RouteOptimizer = () => {
           : sortedCustomers[i].homeaddress;
       const customerId =
         i === sortedCustomers.length ? null : sortedCustomers[i].id;
+      const customerName =
+        i === sortedCustomers.length ? null : sortedCustomers[i].name;
 
       if (start !== destination) {
         // Calculate distance and time for this leg
@@ -124,10 +131,14 @@ const RouteOptimizer = () => {
         const order = {
           driverid: parseInt(selectedDriver),
           customerid: customerId,
+          customername: customerName,
+          drivername: selectedDriverData.name,
+          driveremail: selectedDriverData.email,
           start,
           destination,
           distance,
           time: duration,
+          status: "assigned", // You can set an initial status here
         };
         orders.push(order);
       }
