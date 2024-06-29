@@ -138,7 +138,7 @@ const RouteOptimizer = () => {
           destination,
           distance,
           time: duration,
-          status: "assigned", // You can set an initial status here
+          status: "assigned", // You can set an initial status after ordering
         };
         orders.push(order);
       }
