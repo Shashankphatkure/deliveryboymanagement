@@ -15,6 +15,7 @@ const DriverPaymentsClient = ({ driverId }) => {
   const [driverEmail, setDriverEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [totals, setTotals] = useState({});
 
   useEffect(() => {
     if (driverId) {
@@ -47,12 +48,33 @@ const DriverPaymentsClient = ({ driverId }) => {
       if (error) throw error;
 
       setPayments(data);
+      calculateTotals(data);
     } catch (err) {
       setError("Failed to fetch payments. Please try again.");
       console.error("Error fetching payments:", err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateTotals = (data) => {
+    const totals = {
+      finalamount: 0,
+      totalkm: 0,
+      totalorders: 0,
+      advance: 0,
+      penalty: 0,
+    };
+
+    data.forEach((payment) => {
+      totals.finalamount += Number(payment.finalamount) || 0;
+      totals.totalkm += Number(payment.totalkm) || 0;
+      totals.totalorders += Number(payment.totalorders) || 0;
+      totals.advance += Number(payment.advance) || 0;
+      totals.penalty += Number(payment.penalty) || 0;
+    });
+
+    setTotals(totals);
   };
 
   useEffect(() => {
@@ -187,6 +209,29 @@ const DriverPaymentsClient = ({ driverId }) => {
                     </td>
                   </tr>
                 ))}
+                <tr className="bg-gray-100 font-bold">
+                  <td
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                    colSpan="2"
+                  >
+                    Total
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {totals.finalamount.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {totals.totalkm.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {totals.totalorders}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {totals.advance.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {totals.penalty.toFixed(2)}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
