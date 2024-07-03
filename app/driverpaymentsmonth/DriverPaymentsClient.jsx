@@ -22,12 +22,17 @@ const DriverPaymentsClient = ({ driverId }) => {
       setDriverEmail(decodeURIComponent(driverId));
     }
 
-    // Set default dates
+    // Set default dates to current month's start and end
     const today = new Date();
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastDayOfMonth = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      0
+    );
 
     setStartDate(firstDayOfMonth.toISOString().split("T")[0]);
-    setEndDate(today.toISOString().split("T")[0]);
+    setEndDate(lastDayOfMonth.toISOString().split("T")[0]);
   }, [driverId]);
 
   const fetchPayments = async () => {
