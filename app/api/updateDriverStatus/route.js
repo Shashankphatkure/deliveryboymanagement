@@ -6,7 +6,7 @@ const supabase = createClient(
   process.env.SUPABASE_SECRET_KEY
 );
 
-export async function POST(request) {
+export async function GET(request) {
   try {
     // Check for a secret key to ensure the request is from your cron job
     const { searchParams } = new URL(request.url);
