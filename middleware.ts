@@ -9,6 +9,9 @@ export async function middleware(request: NextRequest) {
     pathname === "/" ||
     pathname === "/password" ||
     pathname === "/drivermode" ||
+    pathname === "/HTML/helpsupport" ||
+    pathname === "/HTML/rulesandregulations" ||
+    pathname === "/HTML/waystoearn" ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/api/") ||
     pathname === "/favicon.ico" ||
