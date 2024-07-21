@@ -175,12 +175,12 @@ const LocationDistanceCheckerContent = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="p-8 bg-white rounded-lg shadow-xl">
+        <div className="p-8 bg-white rounded-lg shadow-xl max-w-md w-full">
           <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
           <p className="text-gray-700">{error}</p>
           <button
             onClick={refresh}
-            className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+            className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Try Again
           </button>
@@ -190,24 +190,24 @@ const LocationDistanceCheckerContent = () => {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-center pt-6 bg-gray-100">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="container mx-auto px-4">
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden mb-8">
           <div className="bg-blue-600 text-white px-6 py-4">
             <h1 className="text-2xl font-bold">Distance Checker</h1>
           </div>
           <div className="p-6">
             {isNearMall ? (
-              <p className="text-green-600 font-semibold">
+              <p className="text-green-600 font-semibold text-lg">
                 You are near the Store. Your attendance has been recorded.
               </p>
             ) : (
               <div>
-                <p className="text-red-600 font-semibold">
+                <p className="text-red-600 font-semibold text-lg mb-4">
                   You are very far from the Store.
                 </p>
                 <button
-                  className="mt-6 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                  className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                   onClick={() =>
                     (window.location.href =
                       "https://www.google.com/maps/dir/19.0715468,73.0995525/dmart+kharghar/@19.060194,73.0664356,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x3be7c0b67daa9095:0xe3fa324f9ec2af96!2m2!1d73.0769246!2d19.0421731?entry=ttu")
@@ -220,29 +220,29 @@ const LocationDistanceCheckerContent = () => {
 
             <button
               onClick={refresh}
-              className="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+              className="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             >
               Refresh page
             </button>
             <button
               onClick={handleCloseWindow}
-              className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+              className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
-              Close Window ( Login later )
+              Close Window (Login later)
             </button>
           </div>
         </div>
-      </div>
 
-      <div className="flex items-center justify-center pt-6 pb-20 bg-gray-100">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="bg-blue-600 text-white px-6 py-4">
             <h1 className="text-2xl font-bold">Safety check before starting</h1>
           </div>
           <div className="p-6">
-            <p className="">1. Wear our brand Tshirt</p>
-            <p className="">2. Keep location ON during delivery</p>
-            <p className="">3. Drive Safely</p>
+            <ul className="list-disc list-inside space-y-2 text-gray-700">
+              <li>Wear our brand T-shirt</li>
+              <li>Keep location ON during delivery</li>
+              <li>Drive Safely</li>
+            </ul>
           </div>
         </div>
       </div>
