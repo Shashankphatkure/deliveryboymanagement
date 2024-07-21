@@ -6,6 +6,7 @@ export default function Home() {
     { name: "Create New Order", path: "/neworder" },
     { name: "Transfer Order", path: "/transferorder" },
     { name: "Send Notifications", path: "/sendnotification" },
+    { name: "Process Driver Payments", path: "/processpayments" },
   ];
 
   return (
