@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useSearchParams } from "next/navigation";
 
+// TODO: Move this to a separate file and use environment variables
 const supabase = createClient(
-  "https://sxgahulciuptxhpvdkcv.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4Z2FodWxjaXVwdHhocHZka2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk0MTAxMjcsImV4cCI6MjAyNDk4NjEyN30.8bUu7eSxcN30rYwtF576HeQnfaBUKVNpHEYPFugQqo8"
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
 const LoadingSpinner = () => (
@@ -26,6 +27,14 @@ const LoadingSpinner = () => (
 );
 
 const LocationDistanceChecker = () => {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <LocationDistanceCheckerContent />
+    </Suspense>
+  );
+};
+
+const LocationDistanceCheckerContent = () => {
   const [isNearMall, setIsNearMall] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,7 +51,7 @@ const LocationDistanceChecker = () => {
       }
 
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI&libraries=geometry`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=geometry`;
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);
@@ -190,7 +199,7 @@ const LocationDistanceChecker = () => {
           <div className="p-6">
             {isNearMall ? (
               <p className="text-green-600 font-semibold">
-                You are near the Store Your attendance has been recorded.
+                You are near the Store. Your attendance has been recorded.
               </p>
             ) : (
               <div>
