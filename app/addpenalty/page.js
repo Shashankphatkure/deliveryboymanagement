@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { supabase } from "../../utils/supabase/supabase";
+import { supabase } from "@/utils/supabase/supabase";
 
 export default function AddDriverPenaltyPage() {
   const initialFormState = {
@@ -10,7 +10,7 @@ export default function AddDriverPenaltyPage() {
     reason: "",
     name: "",
     driverid: "",
-    orderid: "",
+    orderid: null,
     driveremail: "",
     status: "active",
   };
@@ -40,8 +40,7 @@ export default function AddDriverPenaltyPage() {
     const { data, error } = await supabase
       .from("orders")
       .select("id, start, destination")
-      .eq("driverid", driverId)
-      .eq("status", "completed");
+      .eq("driverid", driverId);
     if (error) {
       console.error("Error fetching driver orders:", error);
     } else {
@@ -56,7 +55,6 @@ export default function AddDriverPenaltyPage() {
       [name]: value,
     }));
 
-    // If driver is selected, update name, email, and fetch orders
     if (name === "driverid") {
       const selectedDriver = drivers.find(
         (driver) => driver.id === parseInt(value)
@@ -66,7 +64,7 @@ export default function AddDriverPenaltyPage() {
           ...prevState,
           name: selectedDriver.name,
           driveremail: selectedDriver.email,
-          orderid: "", // Reset order selection
+          orderid: null,
         }));
         fetchDriverOrders(selectedDriver.id);
       }
@@ -77,15 +75,20 @@ export default function AddDriverPenaltyPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
+      const submissionData = { ...formData };
+      if (!submissionData.orderid) {
+        delete submissionData.orderid;
+      }
+
       const { data, error } = await supabase
         .from("driverpenalty")
-        .insert([formData]);
+        .insert([submissionData]);
 
       if (error) throw error;
 
       setSuccessMessage("Driver penalty added successfully!");
       setFormData(initialFormState);
-      setDriverOrders([]); // Clear driver orders after submission
+      setDriverOrders([]);
     } catch (error) {
       console.error("Error adding driver penalty:", error);
       alert("Failed to add driver penalty. Please try again.");
@@ -97,7 +100,7 @@ export default function AddDriverPenaltyPage() {
   const handleAddAnother = () => {
     setFormData(initialFormState);
     setSuccessMessage("");
-    setDriverOrders([]); // Clear driver orders
+    setDriverOrders([]);
   };
 
   return (
@@ -144,17 +147,17 @@ export default function AddDriverPenaltyPage() {
                   htmlFor="orderid"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Select Order
+                  Select Order (Optional)
                 </label>
                 <select
                   name="orderid"
                   id="orderid"
-                  value={formData.orderid}
+                  value={formData.orderid || ""}
                   onChange={handleChange}
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   disabled={!formData.driverid}
                 >
-                  <option value="">Select an order</option>
+                  <option value="">Select an order (optional)</option>
                   {driverOrders.map((order) => (
                     <option key={order.id} value={order.id}>
                       Order #{order.id} - {order.start} to {order.destination}

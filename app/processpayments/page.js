@@ -44,7 +44,7 @@ export default function DriverPaymentDashboard() {
       .from("driverpenalty")
       .select("id, amount, reason")
       .eq("driverid", driverId)
-      .eq("status", "activepenalty");
+      .eq("status", "active");
 
     if (penaltiesError) {
       console.error("Error fetching penalties:", penaltiesError);
@@ -92,7 +92,7 @@ export default function DriverPaymentDashboard() {
       .from("driverpenalty")
       .update({ status: "paid" })
       .eq("driverid", selectedDriver.id)
-      .eq("status", "activepenalty");
+      .eq("status", "active");
 
     if (penaltyError) {
       console.error("Error updating penalties:", penaltyError);

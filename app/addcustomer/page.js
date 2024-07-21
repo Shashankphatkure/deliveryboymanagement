@@ -2,9 +2,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { supabase } from "../../utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { supabase } from "../../utils/supabase/supabase";
 
 export default function AddCustomerPage() {
+  const router = useRouter();
   const initialFormState = {
     name: "",
     phone: "",
@@ -41,18 +43,15 @@ export default function AddCustomerPage() {
       if (error) throw error;
 
       setSuccessMessage("Customer added successfully!");
-      setFormData(initialFormState);
+
+      // Redirect to the new order page after successful submission
+      router.push("/neworder");
     } catch (error) {
       console.error("Error adding customer:", error);
       alert("Failed to add customer. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleAddAnother = () => {
-    setFormData(initialFormState);
-    setSuccessMessage("");
   };
 
   return (
@@ -86,6 +85,7 @@ export default function AddCustomerPage() {
                   value={formData.name}
                   onChange={handleChange}
                   className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  required
                 />
               </div>
               <div>
@@ -102,6 +102,7 @@ export default function AddCustomerPage() {
                   value={formData.phone}
                   onChange={handleChange}
                   className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  required
                 />
               </div>
               <div>
@@ -118,6 +119,7 @@ export default function AddCustomerPage() {
                   value={formData.email}
                   onChange={handleChange}
                   className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  required
                 />
               </div>
               <div>
@@ -134,6 +136,7 @@ export default function AddCustomerPage() {
                   value={formData.city}
                   onChange={handleChange}
                   className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  required
                 />
               </div>
               <div className="sm:col-span-2">
@@ -150,6 +153,7 @@ export default function AddCustomerPage() {
                   value={formData.homeaddress}
                   onChange={handleChange}
                   className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  required
                 />
               </div>
               <div className="sm:col-span-2">
@@ -235,14 +239,7 @@ export default function AddCustomerPage() {
                 />
               </div>
             </div>
-            <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={handleAddAnother}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Add Another
-              </button>
+            <div className="flex justify-end">
               <button
                 type="submit"
                 disabled={isLoading}
