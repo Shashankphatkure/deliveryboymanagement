@@ -205,110 +205,128 @@ const RouteOptimizer = () => {
   );
 
   return (
-    <div className="space-y-6 p-4">
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Select Driver</h2>
-        <input
-          type="text"
-          placeholder="Search drivers..."
-          value={driverSearch}
-          onChange={(e) => setDriverSearch(e.target.value)}
-          className="w-full p-2 border rounded mb-2"
-        />
-        <div className="max-h-60 overflow-y-auto border rounded">
-          {filteredDrivers.map((driver) => (
-            <div
-              key={driver.id}
-              className="flex items-center justify-between p-2 hover:bg-gray-100"
-            >
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="driver"
-                  value={driver.id}
-                  checked={selectedDriver === driver.id.toString()}
-                  onChange={() => handleDriverChange(driver.id.toString())}
-                />
-                <span>
-                  {driver.name || "N/A"} - {driver.city || "N/A"} (
-                  {driver.vehicle || "N/A"})
-                </span>
-              </label>
-              <span className="text-sm">
-                <span
-                  className={`px-2 py-1 rounded ${
-                    driver.status === "active" ? "bg-green-200" : "bg-red-200"
-                  }`}
-                >
-                  {driver.status || "N/A"}
-                </span>
-                <span className="ml-2">{driver.phone || "N/A"}</span>
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="container mx-auto px-4">
+        <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">
+          Route Optimizer
+        </h1>
 
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Select Customers</h2>
-        <input
-          type="text"
-          placeholder="Search customers..."
-          value={customerSearch}
-          onChange={(e) => setCustomerSearch(e.target.value)}
-          className="w-full p-2 border rounded mb-2"
-        />
-        <div className="max-h-60 overflow-y-auto border rounded">
-          {filteredCustomers.map((customer) => (
-            <div
-              key={customer.id}
-              className="flex items-center p-2 hover:bg-gray-100"
-            >
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  value={customer.id}
-                  checked={selectedCustomers.includes(customer.id.toString())}
-                  onChange={() => handleCustomerChange(customer.id.toString())}
-                />
-                <span>
-                  {customer.name || "N/A"} - {customer.city || "N/A"} (
-                  {customer.phone || "N/A"})
-                </span>
-              </label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <button
-        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
-        onClick={handleOptimizeRoutes}
-      >
-        <svg
-          className="w-5 h-5 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Select Driver
+          </h2>
+          <input
+            type="text"
+            placeholder="Search drivers..."
+            value={driverSearch}
+            onChange={(e) => setDriverSearch(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
           />
-        </svg>
-        Optimize Routes
-      </button>
+          <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-md">
+            {filteredDrivers.map((driver) => (
+              <div
+                key={driver.id}
+                className="flex items-center justify-between p-3 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
+              >
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="driver"
+                    value={driver.id}
+                    checked={selectedDriver === driver.id.toString()}
+                    onChange={() => handleDriverChange(driver.id.toString())}
+                    className="form-radio h-5 w-5 text-blue-600"
+                  />
+                  <span className="text-gray-700">
+                    {driver.name || "N/A"} - {driver.city || "N/A"} (
+                    {driver.vehicle || "N/A"})
+                  </span>
+                </label>
+                <span className="text-sm">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      driver.status === "active"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {driver.status || "N/A"}
+                  </span>
+                  <span className="ml-2 text-gray-600">
+                    {driver.phone || "N/A"}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-      {showPopup && (
-        <CustomerOrderPopup
-          customers={selectedCustomersData}
-          onClose={() => setShowPopup(false)}
-          onCreateOrder={handleCreateOrder}
-        />
-      )}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Select Customers
+          </h2>
+          <input
+            type="text"
+            placeholder="Search customers..."
+            value={customerSearch}
+            onChange={(e) => setCustomerSearch(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
+          />
+          <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-md">
+            {filteredCustomers.map((customer) => (
+              <div
+                key={customer.id}
+                className="flex items-center p-3 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
+              >
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={customer.id}
+                    checked={selectedCustomers.includes(customer.id.toString())}
+                    onChange={() =>
+                      handleCustomerChange(customer.id.toString())
+                    }
+                    className="form-checkbox h-5 w-5 text-blue-600"
+                  />
+                  <span className="text-gray-700">
+                    {customer.name || "N/A"} - {customer.city || "N/A"} (
+                    {customer.phone || "N/A"})
+                  </span>
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
+          onClick={handleOptimizeRoutes}
+        >
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+            />
+          </svg>
+          Optimize Routes
+        </button>
+
+        {showPopup && (
+          <CustomerOrderPopup
+            customers={selectedCustomersData}
+            onClose={() => setShowPopup(false)}
+            onCreateOrder={handleCreateOrder}
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -101,10 +101,12 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-3xl">
-        <h2 className="text-2xl font-bold mb-4">Customer Order</h2>
-        <motion.div layout className="space-y-2">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-8 max-w-3xl w-full">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">
+          Customer Order
+        </h2>
+        <motion.div layout className="space-y-4 max-h-96 overflow-y-auto">
           {sortedCustomers.map((customer, index) => (
             <motion.div
               key={customer.id}
@@ -117,22 +119,27 @@ const CustomerOrderPopup = ({ customers, onClose, onCreateOrder }) => {
                   destination: { index: Math.round(info.point.y / 50) },
                 })
               }
-              className="bg-gray-100 p-4 rounded cursor-move"
+              className="bg-gray-50 p-4 rounded-lg shadow cursor-move"
             >
-              <p className="font-semibold">{customer.name}</p>
-              <p className="text-sm">{customer.homeaddress}</p>
-              <p className="text-sm">{customer.phone}</p>
-              <p className="text-sm">Distance: {customer.distance}</p>
-              <p className="text-sm">Duration: {customer.duration}</p>
+              <p className="font-semibold text-gray-800">{customer.name}</p>
+              <p className="text-sm text-gray-600">{customer.homeaddress}</p>
+              <p className="text-sm text-gray-600">{customer.phone}</p>
+              <div className="mt-2 flex justify-between text-sm text-gray-500">
+                <p>Distance: {customer.distance}</p>
+                <p>Duration: {customer.duration}</p>
+              </div>
             </motion.div>
           ))}
         </motion.div>
-        <div className="mt-4 flex justify-end space-x-2">
-          <button className="px-4 py-2 bg-gray-300 rounded" onClick={onClose}>
+        <div className="mt-6 flex justify-end space-x-4">
+          <button
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition-colors"
+            onClick={onClose}
+          >
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-indigo-600 text-white rounded"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             onClick={() => onCreateOrder(sortedCustomers)}
           >
             Create Order
