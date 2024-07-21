@@ -7,6 +7,9 @@ export default function Home() {
     { name: "Transfer Order", path: "/transferorder" },
     { name: "Send Notifications", path: "/sendnotification" },
     { name: "Process Driver Payments", path: "/processpayments" },
+    { name: "Add Customer", path: "/addcustomer" },
+    { name: "Add Driver", path: "/adddriver" },
+    { name: "Add Penalty", path: "/addpenalty" },
   ];
 
   return (
