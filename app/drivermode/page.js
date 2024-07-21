@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useRef } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useSearchParams } from "next/navigation";
 
@@ -10,103 +9,176 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4Z2FodWxjaXVwdHhocHZka2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk0MTAxMjcsImV4cCI6MjAyNDk4NjEyN30.8bUu7eSxcN30rYwtF576HeQnfaBUKVNpHEYPFugQqo8"
 );
 
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="p-8 bg-white rounded-lg shadow-xl">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="w-12 h-12 border-t-4 border-b-4 border-blue-500 rounded-full animate-spin"></div>
+        <p className="text-xl font-semibold text-gray-700">
+          Checking your location...
+        </p>
+        <p className="text-sm text-gray-500">
+          Please wait while we verify your proximity to the store.
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
 const LocationDistanceChecker = () => {
   const [isNearMall, setIsNearMall] = useState(null);
-  // const searchParams = useSearchParams();
-  // const email = searchParams.get("email");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const attendanceRecordCreated = useRef(false);
+  const checkDistanceAttempts = useRef(0);
 
   useEffect(() => {
-    // Load Google Maps API script
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI&libraries=geometry`;
-    script.async = true;
-    document.body.appendChild(script);
+    const loadGoogleMapsAPI = () => {
+      if (window.google && window.google.maps) {
+        checkDistance();
+        return;
+      }
 
-    script.onload = () => {
-      checkDistance();
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAaYgd3JAzhFT4mCzQ2CyZClpa9scSE2CI&libraries=geometry`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+
+      script.onload = () => {
+        checkDistance();
+      };
+
+      script.onerror = () => {
+        setError("Failed to load Google Maps API");
+        setIsLoading(false);
+      };
     };
 
+    loadGoogleMapsAPI();
+
     return () => {
-      document.body.removeChild(script);
+      // Clean up logic if needed
     };
   }, []);
 
   const checkDistance = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLocation = new google.maps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude
-          );
+    if (checkDistanceAttempts.current >= 3) {
+      setError("Maximum check attempts reached");
+      setIsLoading(false);
+      return;
+    }
 
-          // Seawoods Grand Central Mall coordinates
-          const mallLocation = new google.maps.LatLng(19.02563, 73.04896);
+    checkDistanceAttempts.current += 1;
 
-          const service = new google.maps.DistanceMatrixService();
-          service.getDistanceMatrix(
-            {
-              origins: [userLocation],
-              destinations: [mallLocation],
-              travelMode: "DRIVING",
-              unitSystem: google.maps.UnitSystem.METRIC,
-            },
-            async (response, status) => {
-              if (status === "OK") {
-                const distance =
-                  response.rows[0].elements[0].distance.value / 1000; // Convert meters to kilometers
-                const isNear = distance <= 10;
-                setIsNearMall(isNear);
-                console.log(
-                  isNear
-                    ? "User is near the store"
-                    : "User is very far from the store"
-                );
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      setIsLoading(false);
+      return;
+    }
 
-                if (isNear) {
-                  await createAttendanceRecord();
-                }
-              } else {
-                console.error("Error calculating distance:", status);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLocation = new google.maps.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+
+        const mallLocation = new google.maps.LatLng(19.0645144, 73.0950144);
+
+        const service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+          {
+            origins: [userLocation],
+            destinations: [mallLocation],
+            travelMode: "DRIVING",
+            unitSystem: google.maps.UnitSystem.METRIC,
+          },
+          async (response, status) => {
+            if (status === "OK") {
+              const distance =
+                response.rows[0].elements[0].distance.value / 1000;
+              const isNear = distance <= 10;
+              setIsNearMall(isNear);
+              setIsLoading(false);
+
+              if (isNear && !attendanceRecordCreated.current) {
+                await createAttendanceRecord();
               }
+            } else {
+              console.error("Error calculating distance:", status);
+              setError("Error calculating distance");
+              setIsLoading(false);
             }
-          );
+          }
+        );
+      },
+      (error) => {
+        console.error("Error getting user location:", error);
+        setError("Error getting user location");
+        setIsLoading(false);
+      }
+    );
+  };
+
+  const createAttendanceRecord = async () => {
+    if (attendanceRecordCreated.current) return;
+
+    attendanceRecordCreated.current = true;
+
+    try {
+      const now = new Date();
+      const { data, error } = await supabase.from("driverattendance").insert([
+        {
+          ontime: now.toTimeString().split(" ")[0],
+          date: now.toISOString().split("T")[0],
+          driveremail: email,
         },
-        (error) => {
-          console.error("Error getting user location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
+      ]);
+
+      if (error) throw error;
+
+      console.log("Attendance record created successfully:", data);
+      // Optionally, you can add a state to show a success message to the user
+    } catch (error) {
+      console.error("Error creating attendance record:", error);
+      attendanceRecordCreated.current = false;
+      // Optionally, you can add a state to show an error message to the user
     }
   };
 
   const handleCloseWindow = () => {
-    window.close();
+    // Instead of trying to close the window, you could redirect to a "thank you" page
+    // or show a message indicating that the user can close the window
+    console.log("Thank you for checking in. You can now close this window.");
   };
 
   const refresh = () => {
     window.location.reload();
   };
 
-  const createAttendanceRecord = async () => {
-    const now = new Date();
-    const { data, error } = await supabase.from("driverattendance").insert([
-      {
-        ontime: now.toTimeString().split(" ")[0],
-        date: now.toISOString().split("T")[0],
-        // driveremail: email,
-      },
-    ]);
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
-    handleCloseWindow();
-    s;
-    if (error) {
-      console.error("Error creating attendance record:", error);
-    } else {
-      console.log("Attendance record created successfully:", data);
-    }
-  };
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="p-8 bg-white rounded-lg shadow-xl">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
+          <p className="text-gray-700">{error}</p>
+          <button
+            onClick={refresh}
+            className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -116,18 +188,15 @@ const LocationDistanceChecker = () => {
             <h1 className="text-2xl font-bold">Distance Checker</h1>
           </div>
           <div className="p-6">
-            {isNearMall === null ? (
-              <p className="text-gray-600">Checking distance...</p>
-            ) : isNearMall ? (
+            {isNearMall ? (
               <p className="text-green-600 font-semibold">
-                You are near Store.
+                You are near the Store. Your attendance has been recorded.
               </p>
             ) : (
               <div>
                 <p className="text-red-600 font-semibold">
-                  You are very far from Store.
+                  You are very far from the Store.
                 </p>
-
                 <button
                   className="mt-6 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
                   onClick={() =>
