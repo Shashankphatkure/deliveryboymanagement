@@ -190,7 +190,7 @@ const LocationDistanceChecker = () => {
           <div className="p-6">
             {isNearMall ? (
               <p className="text-green-600 font-semibold">
-                You are near the Store. Your attendance has been recorded.
+                You are near the Store Your attendance has been recorded.
               </p>
             ) : (
               <div>
