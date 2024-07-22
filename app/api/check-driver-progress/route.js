@@ -3,23 +3,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import OneSignal from "@onesignal/node-onesignal";
-import { Client as GoogleMapsClient } from "@googlemaps/google-maps-services-js";
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Initialize OneSignal client
-const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
-const ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
-const oneSignalClient = new OneSignal.Client(
-  ONESIGNAL_APP_ID,
-  ONESIGNAL_API_KEY
-);
-
-// Initialize Google Maps client
-const googleMapsClient = new GoogleMapsClient({});
 
 export async function GET(request) {
   try {
@@ -74,18 +62,16 @@ export async function GET(request) {
 
 async function checkDriverProgress(start, destination) {
   try {
-    const response = await googleMapsClient.directions({
-      params: {
-        origin: start,
-        destination: destination,
-        key: process.env.GOOGLE_MAPS_API_KEY,
-      },
-    });
+    const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(
+      start
+    )}&destination=${encodeURIComponent(destination)}&key=${
+      process.env.GOOGLE_MAPS_API_KEY
+    }`;
+    const response = await fetch(url);
+    const data = await response.json();
 
-    if (response.data.routes.length > 0) {
-      // Get the first route
-      const route = response.data.routes[0];
-      // Calculate total distance in meters
+    if (data.routes && data.routes.length > 0) {
+      const route = data.routes[0];
       const totalDistance = route.legs.reduce(
         (acc, leg) => acc + leg.distance.value,
         0
@@ -101,18 +87,31 @@ async function checkDriverProgress(start, destination) {
 }
 
 async function sendNotification(driverEmail, message) {
-  const notification = new OneSignal.Notification();
-  notification.app_id = ONESIGNAL_APP_ID;
-  notification.contents = {
-    en: message,
-  };
-  notification.filters = [
-    { field: "tag", key: "email", relation: "=", value: driverEmail },
-  ];
-
   try {
-    const response = await oneSignalClient.createNotification(notification);
-    console.log("Notification sent:", response.body.id);
+    const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
+    const ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
+
+    if (!ONESIGNAL_APP_ID || !ONESIGNAL_API_KEY) {
+      throw new Error("OneSignal credentials are not properly configured");
+    }
+
+    const configuration = OneSignal.createConfiguration({
+      appKey: ONESIGNAL_API_KEY,
+    });
+
+    const client = new OneSignal.DefaultApi(configuration);
+
+    const notification = new OneSignal.Notification();
+    notification.app_id = ONESIGNAL_APP_ID;
+    notification.contents = {
+      en: message,
+    };
+    notification.filters = [
+      { field: "tag", key: "email", relation: "=", value: driverEmail },
+    ];
+
+    const { id } = await client.createNotification(notification);
+    console.log("Notification sent:", id);
   } catch (error) {
     console.error("Error sending notification:", error);
   }
