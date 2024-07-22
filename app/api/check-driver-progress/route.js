@@ -12,7 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Initialize OneSignal client
 const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
-const ONESIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY;
+const ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
 const oneSignalClient = new OneSignal.Client(
   ONESIGNAL_APP_ID,
   ONESIGNAL_API_KEY
