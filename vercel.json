@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/updateDriverStatus?key=your_secret_key_here",
-      "schedule": "0 22 * * *"
-    }
-  ]
-}
