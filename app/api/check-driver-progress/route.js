@@ -9,6 +9,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// BetterStack Heartbeat URL
+const BETTERSTACK_HEARTBEAT_URL =
+  "https://uptime.betterstack.com/api/v1/heartbeat/DZv33P8EeJ4R7iRy4ytRZbnB";
+
 export async function GET(request) {
   try {
     // Fetch current orders
@@ -49,6 +53,9 @@ export async function GET(request) {
       // Send notification using OneSignal
       await sendNotification(driverEmail, message);
     }
+
+    // Ping BetterStack Heartbeat
+    await pingBetterStackHeartbeat();
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -114,5 +121,17 @@ async function sendNotification(driverEmail, message) {
     console.log("Notification sent:", id);
   } catch (error) {
     console.error("Error sending notification:", error);
+  }
+}
+
+async function pingBetterStackHeartbeat() {
+  try {
+    const response = await fetch(BETTERSTACK_HEARTBEAT_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    console.log("BetterStack Heartbeat pinged successfully");
+  } catch (error) {
+    console.error("Failed to ping BetterStack Heartbeat:", error);
   }
 }
