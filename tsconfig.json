@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/types/app/driverpayments/page.js"
+    ".next/types/app/driverpayments/page.js",
+    "app/api/check-driver-progress/route.js"
   ],
   "exclude": ["node_modules"]
 }
