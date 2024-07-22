@@ -1,5 +1,4 @@
 // File: app/api/check-driver-progress/route.js
-
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import OneSignal from "@onesignal/node-onesignal";
@@ -94,20 +93,30 @@ async function checkDriverProgress(start, destination) {
 }
 
 async function sendNotification(driverEmail, message) {
+  console.log("Entering sendNotification function");
   try {
     const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
     const ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
+
+    console.log("ONESIGNAL_APP_ID:", ONESIGNAL_APP_ID);
+    console.log("ONESIGNAL_API_KEY:", ONESIGNAL_API_KEY);
 
     if (!ONESIGNAL_APP_ID || !ONESIGNAL_API_KEY) {
       throw new Error("OneSignal credentials are not properly configured");
     }
 
-    const configuration = OneSignal.createConfiguration({
-      appKey: ONESIGNAL_API_KEY,
-    });
+    console.log("OneSignal module:", OneSignal);
 
+    // Initialize the OneSignal client
+    const configuration = OneSignal.createConfiguration({
+      userKey: ONESIGNAL_API_KEY,
+      appKey: ONESIGNAL_APP_ID,
+    });
     const client = new OneSignal.DefaultApi(configuration);
 
+    console.log("OneSignal client created");
+
+    // Create the notification
     const notification = new OneSignal.Notification();
     notification.app_id = ONESIGNAL_APP_ID;
     notification.contents = {
@@ -117,12 +126,21 @@ async function sendNotification(driverEmail, message) {
       { field: "tag", key: "email", relation: "=", value: driverEmail },
     ];
 
+    console.log("Notification object:", notification);
+
+    // Send the notification
+    console.log("Attempting to send notification");
     const { id } = await client.createNotification(notification);
     console.log("Notification sent:", id);
   } catch (error) {
     console.error("Error sending notification:", error);
+    console.error("Error name:", error.name);
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
   }
 }
+
+export { sendNotification };
 
 async function pingBetterStackHeartbeat() {
   try {
