@@ -76,7 +76,7 @@ export default function Login({
 
       <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
         <label className="text-md" htmlFor="email">
-          Email
+          Provide Email
         </label>
         <input
           className="rounded-md px-4 py-2 bg-inherit border mb-6"
